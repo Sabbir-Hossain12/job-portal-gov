@@ -22,12 +22,15 @@ class roleSeeder extends Seeder
             ]);
         }
         
+        
         $admin= User::find(1);
         $admin->assignRole('admin');
         
+        
         $teacher= User::find(2);
         $teacher->assignRole('teacher');
-
+        
+        
         $student= User::find(3);
         $student->assignRole('student');
         

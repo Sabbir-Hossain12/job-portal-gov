@@ -29,18 +29,17 @@ class AppServiceProvider extends ServiceProvider
 
         View()->composer('*', function ($view)
         {
-            $pages = Page::where('status',1)->get();
             $basicInfo = BasicInfo::first();
-            $view->with(['basicInfo'=> $basicInfo,'pages'=> $pages]);
+            $view->with(['basicInfo'=> $basicInfo]);
         });
-        
-        View()->composer('Frontend.includes.footer', function ($view)
-        {
-            $classes = CourseClass::where('status',1)->where('is_featured',1)->limit(5)->get();
-            $blogs= Blog::where('status',1)->limit(3)->latest()->get();
-            $view->with(['classes'=> $classes,'blogs'=> $blogs]);
-            
-        });
+//        
+//        View()->composer('Frontend.includes.footer', function ($view)
+//        {
+//            $classes = CourseClass::where('status',1)->where('is_featured',1)->limit(5)->get();
+//            $blogs= Blog::where('status',1)->limit(3)->latest()->get();
+//            $view->with(['classes'=> $classes,'blogs'=> $blogs]);
+//            
+//        });
         
     }
 }

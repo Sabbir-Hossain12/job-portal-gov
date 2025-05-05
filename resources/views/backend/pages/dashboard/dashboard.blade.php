@@ -46,7 +46,7 @@
                         <div class="col-8">
                             <span class="text-muted mb-3 lh-1 d-block text-truncate">Total Classes</span>
                             <h4 class="mb-3">
-                                <span class="">{{$total_classes}}</span>
+                                <span class=""></span>
                             </h4>
                           
                         </div>
@@ -57,78 +57,7 @@
                 </div><!-- end card body -->
             </div>
         </div>
-        <div class="col-xl-3 col-md-6">
-            <!-- card -->
-            <div class="card card-h-100 shadow">
-                <!-- card body -->
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-4 text-center  rounded">
-                            <i class="fas fa-chalkboard h2"></i>
-                        </div>
-
-                        <div class="col-8">
-                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Total Courses</span>
-                            <h4 class="mb-3">
-                                <span class="" >{{$total_courses}}</span>
-                            </h4>
-                        </div>
-
-
-                    </div>
-
-                </div><!-- end card body -->
-            </div>
-        </div>
-        <div class="col-xl-3 col-md-6">
-            <!-- card -->
-            <div class="card card-h-100 shadow">
-                <!-- card body -->
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-4 text-center  rounded">
-                            <i class="fas fa-users h2"></i>
-                        </div>
-
-                        <div class="col-8">
-                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Total Students</span>
-                            <h4 class="mb-3">
-                                <span class="" >{{$total_students}}</span>
-                            </h4>
-                        </div>
-
-
-                    </div>
-
-                </div><!-- end card body -->
-            </div>
-        </div>
-        <div class="col-xl-3 col-md-6">
-            <!-- card -->
-            <div class="card card-h-100 shadow">
-                <!-- card body -->
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-4 text-center  rounded">
-                            <i class="fas fa-user-plus h2"></i>
-                        </div>
-
-                        <div class="col-8">
-                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Total Enrollments</span>
-                            <h4 class="mb-3">
-                                <span class="" >{{$total_enrollments}}</span>
-                            </h4>
-                           
-                        </div>
-
-
-                    </div>
-
-                </div><!-- end card body -->
-            </div>
-        </div>
-
-
+      
     </div>
 
 @endsection
