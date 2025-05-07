@@ -45,10 +45,10 @@ class RoleController extends Controller
                 $badge='';
                 foreach ($perp_names as $perm) {
                     $badge  .=  '<span class="badge bg-success p-1 mx-1 my-1">'.$perm.'</span>';
-
                 }
                 return $badge;
             })
+            
             ->addColumn('action', function ($role) {
                 $addPermission = route('admin.role.assign-permissions-page', $role->id);
               

@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('admit_cards', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('job_post_id')->nullable()->constrained();
+            $table->foreignId('position_id')->nullable()->constrained();
+            
+            $table->foreignId('job_application_id')->constrained()->onDelete('cascade');
+            $table->string('role_number');
+            $table->string('candidateID)')->nullable();
+            $table->string('systemID')->nullable();
+            
             $table->timestamps();
         });
     }

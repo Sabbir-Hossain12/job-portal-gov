@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdmitCardController;
 use App\Http\Controllers\Admin\AssessmentAnswerController;
 use App\Http\Controllers\Admin\AssessmentController;
 use App\Http\Controllers\Admin\AssessmentGradeController;
@@ -13,12 +14,15 @@ use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EnrolmentController;
 use App\Http\Controllers\Admin\HerobannerController;
+use App\Http\Controllers\Admin\JobApplicationController;
+use App\Http\Controllers\Admin\JobPostController;
 use App\Http\Controllers\Admin\LessonController;
 use App\Http\Controllers\Admin\LessonMaterialController;
 use App\Http\Controllers\Admin\LessonVideoController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\PositionController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StudentController;
@@ -64,17 +68,33 @@ Route::name('admin.')->middleware(['checkAuth'])->group(function ()
     Route::resource('/permissions', PermissionController::class)->names('permission');
     Route::get('/permission/data', [PermissionController::class, 'getData'])->name('permission.data');
     
-   
     //basic settings
     Route::resource('/basic-infos', BasicinfoController::class)->names('basicinfo');
     
+    //Job Post
+    Route::resource('/job-posts', JobPostController::class)->names('jobpost');
+    Route::get('/job-post/data', [JobPostController::class, 'getData'])->name('jobpost.data');
+    Route::post('/change-job-post-status', [JobPostController::class, 'changeJobPostStatus'])->name('jobpost.status');
     
-    //Blogs
-    Route::resource('/blogs', BlogController::class)->names('blog');
-    Route::get('/blog/data', [BlogController::class, 'getData'])->name('blog.data');
-    Route::post('/blog/change-status', [BlogController::class, 'changeStatus'])->name('blog.change-status');
-    Route::post('/upload-ckeditor-image', [BlogController::class, 'uploadCkeditorImage'])->name('blog.ckeditor.upload');
+    //Job Position
+    Route::get('/positions/{id}', [PositionController::class, 'index'])->name('position.index');
+    Route::get('/positions/{id}/create', [PositionController::class, 'create'])->name('position.create');
+    Route::get('/positions/{id}/edit', [PositionController::class, 'edit'])->name('position.edit');
+    Route::put('/positions/{id}/update', [PositionController::class, 'update'])->name('position.update');
+    Route::post('/positions/store', [PositionController::class, 'store'])->name('position.store');
+    Route::delete('/positions/{id}', [PositionController::class, 'destroy'])->name('position.destroy');
+    Route::post('/change-position-status', [PositionController::class, 'changePositionStatus'])->name('position.status');
     
-    //pages
-    Route::resource('/pages', PageController::class)->names('page');
+    //Job Applications
+    Route::get('/job-applications/{id}', [JobApplicationController::class, 'index'])->name('jobapplication.index');
+    Route::get('/job-applications/{id}/create', [JobApplicationController::class, 'create'])->name('jobapplication.create');
+    Route::get('/job-applications/{id}/edit', [JobApplicationController::class, 'edit'])->name('jobapplication.edit');
+    Route::put('/job-applications/{id}/update', [JobApplicationController::class, 'update'])->name('jobapplication.update');
+    Route::post('/job-applications/store', [JobApplicationController::class, 'store'])->name('jobapplication.store');
+    Route::delete('/job-applications/{id}', [JobApplicationController::class, 'destroy'])->name('jobapplication.destroy');
+    Route::post('/change-job-application-status', [JobApplicationController::class, 'changeJobApplicationStatus'])->name('jobapplication.status');
+
+    //Admit Card
+    Route::get('/preview-admit-cards/', [AdmitCardController::class, 'previewAdminCard'])->name('admitcard.preview');
+
 });

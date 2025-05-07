@@ -12,211 +12,50 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        $permissions=[
-            
-          [
-              'name' => 'View Testimonial',
-              'guard_name' => 'web',
-          ] ,
-            
+        $table_rows = array(
             [
-                'name' => 'Create Testimonial',
-                'guard_name' => 'web',
-            ] ,
+                'group_name' => 'Dashboard',
+                'permissions' => [
+                    'Admin Dashboard',
+                ]
+            ],
+            [
+                'group_name' => 'Admin',
+                'permissions' => [
+                    'View Admin',
+                    'Create Admin',
+                    'Edit Admin',
+                    'Delete Admin',
+                    'Status Admin',
+                ]
+            ],
+            [
+                'group_name' => 'Role',
+                'permissions' => [
+                    'View Role',
+                    'Create Role',
+                    'Edit Role',
+                    'Delete Role',
+                    'Status Role',
+                ]
+            ],
+            [
+                'group_name' => 'Permission',
+                'permissions' => [
+                    'View Permission',
+                ]
+            ],
+        );
 
+        foreach ($table_rows as $i => $iValue) {
+            $group_name = $iValue['group_name'];
 
-            [
-                'name' => 'Edit Testimonial',
-                'guard_name' => 'web',
-            ] ,
-
-
-            [
-                'name' => 'Delete Testimonial',
-                'guard_name' => 'web',
-            ] ,
-
-            [
-                'name' => 'Status Testimonial',
-                'guard_name' => 'web',
-            ],
-            
-            [
-                'name'=> 'View HeroBanner',
-                'guard_name' => 'web',
-            ],
-            
-            [
-                'name'=> 'View About',
-                'guard_name' => 'web',
-            ],
-
-            
-            [
-                'name'=> 'View Blog',
-                'guard_name' => 'web',
-            ],
-            [
-                'name'=> 'Create Blog',
-                'guard_name' => 'web',
-            ]
-            ,
-            [
-                'name'=> 'Edit Blog',
-                'guard_name' => 'web',
-            ],
-            [
-                'name'=> 'Delete Blog',
-                'guard_name' => 'web',
-            ],
-            [
-                'name'=> 'Status Blog',
-                'guard_name' => 'web',
-            ]
-            ,
-            [
-                'name'=> 'View Page',
-                'guard_name' => 'web',
-            ],
-            [
-                'name'=> 'Create Page',
-                'guard_name' => 'web',
-            ]
-            ,
-            [
-                'name'=> 'Edit Page',
-                'guard_name' => 'web',
-            ],
-            
-            [
-                'name'=> 'Delete Page',
-                'guard_name' => 'web',
-            ],
-            
-            [
-                'name'=> 'View Settings',
-                'guard_name' => 'web',
-            ],
-            
-            //Admins
-            [
-                'name'=> 'View Admin',
-                'guard_name' => 'web',
-            ],
-
-            [
-                'name'=> 'Create Admin',
-                'guard_name' => 'web',
-            ],
-            
-            [
-                'name'=> 'Edit Admin',
-                'guard_name' => 'web',
-            ],
-            
-            [
-                'name'=> 'Delete Admin',
-                'guard_name' => 'web',
-            ],
-            
-            [
-                'name'=> 'Status Admin',
-                'guard_name' => 'web',
-            ],
-            
-            //Teacher
-
-            [
-                'name'=> 'View Teacher',
-                'guard_name' => 'web',
-            ],
-
-            [
-                'name'=> 'Create Teacher',
-                'guard_name' => 'web',
-            ],
-
-            [
-                'name'=> 'Edit Teacher',
-                'guard_name' => 'web',
-            ],
-
-            [
-                'name'=> 'Delete Teacher',
-                'guard_name' => 'web',
-            ],
-
-            [
-                'name'=> 'Status Teacher',
-                'guard_name' => 'web',
-            ],
-            
-            //Student
-
-            [
-                'name'=> 'View Student',
-                'guard_name' => 'web',
-            ],
-
-            [
-                'name'=> 'Create Student',
-                'guard_name' => 'web',
-            ],
-
-            [
-                'name'=> 'Edit Student',
-                'guard_name' => 'web',
-            ],
-
-            [
-                'name'=> 'Delete Student',
-                'guard_name' => 'web',
-            ],
-
-            [
-                'name'=> 'Status Student',
-                'guard_name' => 'web',
-            ],
-            
-            //Role 
-
-            [
-                'name'=> 'View Role',
-                'guard_name' => 'web',
-            ],
-
-            [
-                'name'=> 'Create Role',
-                'guard_name' => 'web',
-            ],
-
-            [
-                'name'=> 'Edit Role',
-                'guard_name' => 'web',
-            ],
-
-            [
-                'name'=> 'Delete Role',
-                'guard_name' => 'web',
-            ],
-
-            [
-                'name'=> 'Status Role',
-                'guard_name' => 'web',
-            ],
-            
-            //Permission
-            [
-                'name'=> 'View Permission',
-                'guard_name' => 'web',
-            ],
-
-
-
-        ];
-        
-        foreach ($permissions as $permission) {
-            \Spatie\Permission\Models\Permission::create($permission);
+            foreach ($iValue['permissions'] as $j => $jValue) {
+                \Spatie\Permission\Models\Permission::create([
+                    'name' => $iValue['permissions'][$j],
+                    'group_name' => $group_name
+                ]);
+            }
         }
     }
 }

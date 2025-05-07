@@ -69,16 +69,20 @@
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
-                        <i class="fa-solid fa-"></i>
+                        <i class="fa-solid fa-briefcase"></i>
                         <span data-key="t-apps">Job Management</span>
                     </a>
 
                     <ul class="sub-menu" aria-expanded="false">
                         <li>
-                            <a href="{{ route('admin.basicinfo.index') }}">
+                            <a href="{{ route('admin.jobpost.index') }}">
                                 <span data-key="t-calendar">Job Posts</span>
                             </a>
                         </li>
+                        
+                      
+
+                        
 
                     </ul>
                 </li>
