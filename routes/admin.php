@@ -95,6 +95,6 @@ Route::name('admin.')->middleware(['checkAuth'])->group(function ()
     Route::post('/change-job-application-status', [JobApplicationController::class, 'changeJobApplicationStatus'])->name('jobapplication.status');
 
     //Admit Card
-    Route::get('/preview-admit-cards/', [AdmitCardController::class, 'previewAdminCard'])->name('admitcard.preview');
+    Route::get('/preview-admit-cards/{id}', [AdmitCardController::class, 'previewAdminCard'])->name('admitcard.preview');
 
 });

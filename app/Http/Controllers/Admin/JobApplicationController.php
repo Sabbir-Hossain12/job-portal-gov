@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdmitCard;
 use App\Models\JobApplication;
 use App\Models\Position;
 use Illuminate\Http\Request;
@@ -43,10 +44,10 @@ class JobApplicationController extends Controller
                 ->addColumn('action', function ($jobApplication) {
 
                     $editRoute      = route('admin.jobapplication.edit', $jobApplication->id);
-                    $admitPrevRoute  = route('admin.admitcard.preview');
+                    $admitPrevRoute  = route('admin.admitcard.preview', $jobApplication->id);
 
                     $admitPrevAction    = '<a class="editButton btn btn-sm btn-success" href="'.$admitPrevRoute.'">
-                                   <i class="fas fa-eye"></i>
+                                   <i class="fas fa-eye"></i> View Admit
                                    </a>';
 
                     $editAction     = '<a class="editButton btn btn-sm btn-primary" href="'.$editRoute.'">
@@ -127,7 +128,25 @@ class JobApplicationController extends Controller
             $jobApplication->signature ='backend/upload/job_application/'. $filename;
         }
         
-        $jobApplication->save();
+        $application = $jobApplication->save();
+        
+        //Unique Roll number
+        $year = date('Y');
+        $maxId = JobApplication::whereYear('created_at', $year)->max('id');
+        $last = $maxId ? $maxId + 1 : 1;
+
+        $roll = $year . str_pad($last, 4, '0', STR_PAD_LEFT);
+        
+        $admit = new AdmitCard();
+        $admit->job_post_id = $request->job_post_id;
+        $admit->job_application_id = $jobApplication->id;
+        $admit->position_id = $request->position_id;
+        $admit->role_number = $roll;
+        $admit->candidateID = uniqid();
+        $admit->systemID = time().uniqid();
+        $admit->save();
+        
+        
         
         return redirect()->route('admin.jobapplication.index',$request->position_id)->with('success', 'Job Application Added Successfully');
     }

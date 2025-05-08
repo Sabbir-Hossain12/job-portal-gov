@@ -6,13 +6,13 @@
                 <a href="" class="logo logo-dark">
                     @if(isset($basicInfo->dark_logo))
                         <span class="logo-sm">
-                           <img src="{{asset($basicInfo->dark_logo)}}" alt="" width="80%" height="24">
+                           <img src="{{asset($basicInfo->dark_logo)}}" alt="" width="30px" height="30px">
                        </span>
                     @endif
                     
                     @if(isset($basicInfo->dark_logo))
                         <span class="logo-lg">
-                            <img src="{{asset($basicInfo->dark_logo)}}" alt="" width="160px" height="60px"> 
+                            <img src="{{asset($basicInfo->dark_logo)}}" alt="" width="80px" height="60px"> 
                         </span>
                     @endif
                     

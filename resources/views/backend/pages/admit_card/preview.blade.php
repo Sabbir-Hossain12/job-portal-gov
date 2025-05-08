@@ -50,6 +50,11 @@
         .signature {
             margin-top: 20px;
         }
+        .signature img {
+            width: 150px;
+            height: auto;
+            /*border: 1px solid #000;*/
+        }
         .instructions {
             margin-top: 30px;
         }
@@ -77,74 +82,75 @@
 <body>
 <div class="admit-card">
     <div class="header">
-        <img src="https://i.ibb.co/kDf38Yv/bd-logo.png" alt="BD Logo" />
-        <h2>Government of the People's Republic of Bangladesh<br>Payra Port Authority</h2>
-        <div class="title">Admit Card for the post of ‘Assistant Director (Accounts)’</div>
+        @if(isset($basicInfo->dark_logo))
+        <img src="{{ asset($basicInfo->dark_logo) }}" alt="BD Logo" />
+        @endif
+        <h2>{{ $basicInfo->site_name ?? "Government of the People's Republic of Bangladesh" }}<br>{{ $basicInfo->department_name ?? 'Department of Livestock Services - DLS' }}</h2>
+        <div class="title">Admit Card for the post of ‘{{ $jobApplications->position->title ?? '' }}’</div>
     </div>
 
     <table class="info-table">
         <tr>
             <td><strong>Roll No:</strong></td>
-            <td>1200015</td>
-            <td class="photo" rowspan="6"><img src="https://i.ibb.co/f9CH2GZ/profile-placeholder.png" alt="Photo"></td>
+            <td>{{ $jobApplications->admitCard->role_number ?? '' }}</td>
+            <td class="photo" rowspan="6"><img src="{{ asset($jobApplications->img) }}" alt="Photo"></td>
         </tr>
         <tr>
             <td><strong>Name:</strong></td>
-            <td>MD. FARIDUL HASAN</td>
+            <td>{{ $jobApplications->candidate_name ?? '' }}</td>
         </tr>
         <tr>
             <td><strong>Mother’s Name:</strong></td>
-            <td>FATEMA BEGUM</td>
+            <td>{{ $jobApplications->mothers_name ?? '' }}</td>
         </tr>
         <tr>
             <td><strong>Father’s Name:</strong></td>
-            <td>ABDUL SATTAR</td>
+            <td>{{ $jobApplications->fathers_name ?? '' }}</td>
         </tr>
         <tr>
             <td><strong>Exam Date and Time:</strong></td>
-            <td>Friday, April 22, 2022 (10:00 a.m. to 11:00 a.m.)</td>
+            <td>{{ \Carbon\Carbon::parse($jobApplications->jobPost->exam_date)->format('d M, Y') }} ({{ $jobApplications->jobPost->exam_time ?? ''  }})</td>
         </tr>
         <tr>
             <td><strong>Exam Center:</strong></td>
-            <td>Sidheswari Girls’ High School, 30, New Baily Road, Ramna, Dhaka 1217</td>
+            <td>{{ $jobApplications->position->exam_center ?? '' }}</td>
         </tr>
     </table>
 
     <div class="signature">
-        <p><strong>Candidate's Signature:</strong> ______________________</p>
+        <p>
+            <strong>Candidate's Signature:</strong> 
+            <img src="{{ asset($jobApplications->signature) }}" alt="Signature">
+        </p>
     </div>
 
     <div class="instructions">
         <h4>Instructions to the Candidates</h4>
-        <ol>
-            <li>This admit card will be applicable for written examination, practical examination and viva voce.</li>
-            <li>Bringing Mobile Phone or Calculator or any electronic device including electronic/digital watch is STRICTLY PROHIBITED.</li>
-            <li>Candidates should bring Black Ballpoint pen for examination.</li>
-            <li>Candidates must reach the examination hall 30 minutes before the commencement of the examination.</li>
-            <li>Photograph on this admit card will be verified with the application form.</li>
-            <li>Applicant must use the same signature used in the application.</li>
-            <li>Misbehavior or unfair means will lead to punishment or disqualification.</li>
-            <li>No TA/DA will be provided for attending the exam.</li>
-            <li>Candidates must follow the health instructions.</li>
-        </ol>
+        
+       {!!  $jobApplications->jobPost->exam_instructions ?? '' !!}
+        
     </div>
 
     <div class="footer">
         <div>
-            Downloading Date: 22-04-18 12:11:04<br>
-            User ID: MPG03ZUQ | System ID: 2B6xA8DPa1B2zB6B93BBOE4502B6c6CB
+            Downloading Date: {{ \Carbon\Carbon::now()->format('d-m-Y') }}<br>
+            User ID: {{ $jobApplications->admitCard->candidateID ?? '' }} | System ID: {{ $jobApplications->admitCard->systemID ?? '' }}
         </div>
+        
         <div style="text-align: right;">
-            <strong>Commander M Rafiul Hasain (TAS) psc, BN (Retd.)</strong><br>
-            Member (Admin and Finance)<br>
-            Payra Port Authority
+            <img src="" alt="">
+            <strong>{{ $basicInfo->signatory_name ?? '' }}</strong>
+            <br>
+            {{ $basicInfo->signatory_designation ?? '' }}
+            <br>
+            {{ $basicInfo->signatory_organization ?? '' }}
         </div>
     </div>
 </div>
 
 <script>
     // Auto print when loaded (optional)
-    window.onload = () => window.print();
+    // window.onload = () => window.print();
 </script>
 </body>
 </html>

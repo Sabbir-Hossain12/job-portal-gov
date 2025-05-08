@@ -34,6 +34,7 @@ class BasicinfoController extends Controller
 //      dd($request->all());
         $basicInfo= new Basicinfo();
         $basicInfo->site_name=$request->site_name;
+        $basicInfo->department_name=$request->department_name;
         $basicInfo->phone_1=$request->phone_1;
         $basicInfo->phone_2=$request->phone_2;
         $basicInfo->mail=$request->mail;
@@ -51,6 +52,10 @@ class BasicinfoController extends Controller
         $basicInfo->meta_desc=$request->meta_desc;
         $basicInfo->meta_keyword=$request->meta_keyword;
         $basicInfo->opening_hours_text=$request->opening_hours_text;
+        $basicInfo->signatory_name = $request->signatory_name;
+        $basicInfo->signatory_designation = $request->signatory_designation;
+        $basicInfo->signatory_organization = $request->signatory_organization;
+        
         
         if ($request->hasFile('dark_logo')) {
             
@@ -82,6 +87,14 @@ class BasicinfoController extends Controller
             $filename = time() .uniqid(). '.' . $file->getClientOriginalExtension();
             $file->move('backend/upload/favIcon/', $filename);
             $basicInfo->fav_icon ='backend/upload/favIcon/' . $filename;
+        }
+
+        if ($request->hasFile('signatory_signature')) {
+            
+            $file = $request->file('signatory_signature');
+            $filename = time() .uniqid(). '.' . $file->getClientOriginalExtension();
+            $file->move('backend/upload/signature/', $filename);
+            $basicInfo->signatory_signature ='backend/upload/signature/' . $filename;
         }
         
        $save= $basicInfo->save();
@@ -116,9 +129,9 @@ class BasicinfoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-//        dd($request->all());
         $basicInfo= Basicinfo::first();
         $basicInfo->site_name=$request->site_name;
+        $basicInfo->department_name=$request->department_name;
         $basicInfo->phone_1=$request->phone_1;
         $basicInfo->phone_2=$request->phone_2;
         $basicInfo->mail=$request->mail;
@@ -136,6 +149,10 @@ class BasicinfoController extends Controller
         $basicInfo->meta_desc=$request->meta_desc;
         $basicInfo->meta_keyword=$request->meta_keyword;
         $basicInfo->opening_hours_text=$request->opening_hours_text;
+        $basicInfo->signatory_name = $request->signatory_name;
+        $basicInfo->signatory_designation = $request->signatory_designation;
+        $basicInfo->signatory_organization = $request->signatory_organization;
+        
         
         if ($request->hasFile('dark_logo')) {
             
@@ -188,6 +205,21 @@ class BasicinfoController extends Controller
             $file->move('backend/upload/favIcon/', $filename);
             $basicInfo->fav_icon ='backend/upload/favIcon/' . $filename;
         }
+
+        if ($request->hasFile('signatory_signature')) {
+            
+            if ($basicInfo->signatory_signature && file_exists(public_path($basicInfo->signatory_signature))) {
+                
+                unlink(public_path($basicInfo->signatory_signature));
+            }
+            
+            $file = $request->file('signatory_signature');
+            $filename = time() .uniqid(). '.' . $file->getClientOriginalExtension();
+            $file->move('backend/upload/signature/', $filename);
+            $basicInfo->signatory_signature ='backend/upload/signature/' . $filename;
+        }
+          
+          
         
        $save= $basicInfo->save();
 

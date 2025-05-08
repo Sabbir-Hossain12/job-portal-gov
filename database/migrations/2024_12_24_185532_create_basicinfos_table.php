@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('site_name')->nullable();
             $table->text('dark_logo')->nullable();
             $table->text('light_logo')->nullable();
+            $table->text('fav_icon')->nullable();
             $table->string('phone_1')->nullable();
             $table->string('phone_2')->nullable();
             $table->string('mail')->nullable();
@@ -30,6 +31,15 @@ return new class extends Migration
             $table->text('about_text')->nullable();
             $table->text('opening_hours_text')->nullable();
             $table->text('copyright_text')->nullable();
+            
+            $table->string('meta_title')->nullable();
+            $table->text('meta_description')->nullable();
+            $table->text('meta_keywords')->nullable();
+            
+            $table->string('signatory_signature')->nullable();
+            $table->string('signatory_name')->nullable();
+            $table->string('signatory_designation')->nullable();
+            $table->string('signatory_organization')->nullable();
             
             $table->timestamps();
         });

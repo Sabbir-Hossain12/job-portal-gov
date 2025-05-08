@@ -42,7 +42,7 @@
                                                id="dark_logo">
                                         @if($basicInfo && $basicInfo->dark_logo) 
                                         <img id="bLogoImgPrev" class="mt-1" src="{{asset($basicInfo->dark_logo)}}"
-                                             height="60px" width="200px" alt=""/>
+                                             height="60px" width="60px" alt=""/>
                                         @endif
                                     </div>
                                     
@@ -63,6 +63,13 @@
                                         <input class="form-control" type="text" name="site_name"
                                                placeholder=""
                                                id="site_name" value="{{$basicInfo->site_name ?? ''}}">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="department_name" class="form-label">Department Name</label>
+                                        <input class="form-control" type="text" name="department_name"
+                                               placeholder=""
+                                               id="department_name" value="{{$basicInfo->department_name ?? ''}}">
                                     </div>
 
                                     <div class="mb-3">
@@ -129,7 +136,7 @@
                                                id="light_logo">
                                         @if($basicInfo && $basicInfo->light_logo) 
                                         <img id="lLogoImgPrev" class="mt-1" src="{{asset($basicInfo->light_logo)}}"
-                                             height="60px" width="200px" alt=""/>
+                                             height="60px" width="60px" alt=""/>
                                         @endif
                                     </div>
                                     <div class="mb-3">
@@ -189,6 +196,63 @@
                 </div>
             </div> <!-- end col -->
         </div>
+{{--  Signature --}}
+        <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title text-center">Signatory Information</h4>
+
+                            </div>
+
+
+                            <div class="card-body p-4">
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div>
+                                            <div class="mb-3">
+                                                <label for="signatory_signature" class="form-label">Signature</label>
+                                                <input type="file" class="form-control" id="signatory_signature" name="signatory_signature">
+
+                                                @if($basicInfo && $basicInfo->signatory_signature)
+                                                    <img id="signatureImgPrev" class="mt-1" src="{{asset($basicInfo->signatory_signature)}}"
+                                                         height="60px" width="180px"/>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <div class="mb-3">
+                                                <label for="signatory_name" class="form-label">Name</label>
+                                                <input type="text" id="signatory_name" name="signatory_name"
+                                                          class="form-control" value="{{$basicInfo->signatory_name ?? ''}}">
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="mt-3 mt-lg-0">
+                                            <div class="mb-3">
+                                                <label for="signatory_designation" class="form-label">Designation</label>
+                                                <input type="text" id="signatory_designation" class="form-control"
+                                                          name="signatory_designation" value="{{ $basicInfo->signatory_designation ?? '' }}">
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="signatory_organization" class="form-label">Organization</label>
+                                                <input type="text" id="signatory_organization" class="form-control"
+                                                       name="signatory_organization" value="{{ $basicInfo->signatory_organization ?? '' }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div> <!-- end col -->
+                </div>
         <div class="row">
             <div class="col-12">
                 <div class="card">

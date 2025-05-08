@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AdmitCard;
+use App\Models\JobApplication;
 use Illuminate\Http\Request;
 
 class AdmitCardController extends Controller
@@ -16,9 +17,11 @@ class AdmitCardController extends Controller
         //
     }
 
-    public function previewAdminCard()
+    public function previewAdminCard(string $id)
     {
-        return view('backend.pages.admit_card.preview');
+        $jobApplications = JobApplication::where('id', $id)->with('admitCard')->first();
+        
+        return view('backend.pages.admit_card.preview', compact('jobApplications'));
     }
 
     /**
