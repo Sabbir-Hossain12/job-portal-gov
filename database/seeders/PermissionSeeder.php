@@ -37,6 +37,7 @@ class PermissionSeeder extends Seeder
                     'Edit Role',
                     'Delete Role',
                     'Status Role',
+                    'Assign Permission',
                 ]
             ],
             [
@@ -45,6 +46,25 @@ class PermissionSeeder extends Seeder
                     'View Permission',
                 ]
             ],
+
+            [
+                'group_name' => 'Job',
+                'permissions' => [
+                    'View Post',
+                    'Create Post',
+                    'Edit Post',
+                    'Delete Post',
+                    'Status Post',
+                    'View Position'
+                ]
+            ],
+            
+            [
+                'group_name' => 'Settings',
+                'permissions' => [
+                    'View Settings',
+                ]
+            ]
         );
 
         foreach ($table_rows as $i => $iValue) {

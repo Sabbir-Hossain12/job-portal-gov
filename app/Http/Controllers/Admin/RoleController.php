@@ -4,12 +4,26 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
-class RoleController extends Controller
+class RoleController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+
+            new Middleware('permission:View Role', only: ['index','getData']),
+            new Middleware('permission:Create Role', only: ['store','create']),
+            new Middleware('permission:Edit Role', only: ['update','edit']),
+            new Middleware('permission:Delete Role', only: ['destroy']),
+
+        ];
+    }
     public function index()
     {
         $roles = Role::get();
@@ -51,13 +65,33 @@ class RoleController extends Controller
             
             ->addColumn('action', function ($role) {
                 $addPermission = route('admin.role.assign-permissions-page', $role->id);
-              
-
-                return '<div class="d-flex gap-3">  
-                            <a class="btn btn-sm btn-primary" href="'.$addPermission.'"><i class="fa-solid fa-user-plus"></i></a> 
-                            <a class="editButton btn btn-sm btn-primary" href="javascript:void(0)" data-id="'.$role->id.'" data-bs-toggle="modal" data-bs-target="#editRoleModal"><i class="fas fa-edit"></i></a>
-                            <a class="btn btn-sm btn-danger" href="javascript:void(0)" data-id="'.$role->id.'" id="deleteRoleBtn""> <i class="fas fa-trash"></i></a>
+                $assignPermissionBtn = '';
+                $editBtn = '';
+                $deleteBtn = '';
+                
+                if (Auth::user()->can('Edit Role')) {
+                    $editBtn = '<a class="editButton btn btn-sm btn-primary" href="javascript:void(0)" data-id="'.$role->id.'" data-bs-toggle="modal" data-bs-target="#editRoleModal"><i class="fas fa-edit"></i></a>';
+                }
+                
+                if (Auth::user()->can('Delete Role')) {
+                    $deleteBtn = '<a class="btn btn-sm btn-danger" href="javascript:void(0)" data-id="'.$role->id.'" id="deleteRoleBtn""> <i class="fas fa-trash"></i></a>';
+                }
+                if (Auth::user()->can('Assign Permission')) {
+                    
+                $assignPermissionBtn = '<a class="btn btn-sm btn-primary" href="'.$addPermission.'"><i class="fa-solid fa-user-plus"></i></a>';
+                }
+                
+                
+                if($role->name != 'admin'){
+                    return '<div class="d-flex gap-3">  
+                             
+                            '.$assignPermissionBtn.'
+                            '.$editBtn.'
+                            '.$deleteBtn.'
+                            
                         </div>';
+                }
+               
             })
             ->rawColumns(['action', 'permissions'])
             ->make(true);

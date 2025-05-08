@@ -15,7 +15,8 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0 font-size-18">Job Applications for <span class="text-primary">{{ $position->title }} </span></h4>
+                <h4 class="mb-sm-0 font-size-18">Job Applications for <span
+                            class="text-primary">{{ $position->title }} </span></h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
@@ -37,11 +38,18 @@
 
                     <div class="d-flex justify-content-between align-items-center">
                         <h4 class="card-title">Job Applications</h4>
-                        {{--                       @can('Create Admin')--}}
-                        {{--                       @if(Auth::guard('admin')->user()->can('Create Admin'))--}}
-                        <a class="btn btn-primary" href="{{route('admin.jobapplication.create', $position->id)}}" >
-                            Create Application
-                        </a>
+
+                        <div class="d-flex gap-2">
+                            <a class="btn btn-danger" id="bulkAdmitCardIssue" href="javascript: void(0);">
+                                Issue Admin Card
+                            </a>
+                            
+                            {{--                       @can('Create Admin')--}}
+                            {{--                       @if(Auth::guard('admin')->user()->can('Create Admin'))--}}
+                            <a class="btn btn-primary" href="{{route('admin.jobapplication.create', $position->id)}}">
+                                Create Application
+                            </a>
+                        </div>
                         {{--                        @endcan--}}
                         {{--                        @endif--}}
                     </div>
@@ -52,6 +60,7 @@
                         <table class="table mb-0  nowrap w-100 dataTable no-footer dtr-inline" id="adminTable">
                             <thead>
                             <tr>
+                                <th><input type="checkbox" id="select-all"></th>
                                 <th>SL</th>
                                 <th>Photo</th>
                                 <th>Candidate info</th>
@@ -102,6 +111,7 @@
                 // pageLength: 30,
 
                 columns: [
+                    { data: 'checkbox', name: 'checkbox', orderable: false, searchable: false },
                     {
                         data: 'id',
                     },
@@ -112,7 +122,7 @@
                             return '<img src="{{ asset('') }}' + data + '" width="70" height="70" alt="img" class="rounded-circle"/>';
                         }
                     },
-                    
+
                     {
                         data: 'candidate_name',
 
@@ -123,7 +133,7 @@
                         orderable: false,
                         searchable: false,
                     },
-                    
+
                     {
                         data: 'payment_status',
                         render: function (data, type, row) {
@@ -135,7 +145,7 @@
                         orderable: false,
                         searchable: false,
                     },
-                    
+
                     {
                         data: 'action',
                         name: 'Actions',
@@ -161,7 +171,7 @@
                 })
                     .then((result) => {
                         if (result.isConfirmed) {
-                            
+
                             $.ajax({
                                 type: 'DELETE',
 
@@ -229,6 +239,28 @@
                         }
                     }
                 )
+            })
+            
+            //select all
+            $('#select-all').on('click', function(){
+                $('input[name="selected_ids[]"]').prop('checked', this.checked);
+            });
+            
+            //Bulk Admit Card Issue
+            $(document).on('click', '#bulkAdmitCardIssue', function () {
+
+                let selectedIds = [];
+
+                $('input[name="selected_ids[]"]:checked').each(function () {
+                    selectedIds.push($(this).val());
+                });
+
+                if (selectedIds.length === 0) {
+                    alert('Please select at least one record to issue admit cards.');
+                } else {
+                    alert('Selected IDs: ' + selectedIds.join(', '));
+                    // OR console.log(selectedIds);
+                }
             })
         });
     </script>

@@ -19,13 +19,26 @@
             text-align: center;
             border-bottom: 2px solid #000;
             padding-bottom: 10px;
+            background-color: green;
         }
         .header img {
             height: 60px;
             vertical-align: middle;
+            margin-top: 10px;
         }
+
+        .header .title
+        {
+            color: #e2d7d7;
+        }
+        
+        .header h2
+         {
+            color: #e2d7d7;
+            font-size: 20px;
+         }
         .title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             margin-top: 10px;
         }
@@ -118,9 +131,9 @@
     </table>
 
     <div class="signature">
+        <p><img src="{{ asset($jobApplications->signature) }}" alt="Signature"></p>
         <p>
-            <strong>Candidate's Signature:</strong> 
-            <img src="{{ asset($jobApplications->signature) }}" alt="Signature">
+            <strong>Candidate's Signature:</strong>
         </p>
     </div>
 

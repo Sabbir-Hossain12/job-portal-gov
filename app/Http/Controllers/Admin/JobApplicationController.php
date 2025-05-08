@@ -76,7 +76,10 @@ class JobApplicationController extends Controller
                     return '<div class="d-flex gap-3"> '.$admitPrevAction.$editAction.$deleteAction.'</div>';
 
                 })
-                ->rawColumns(['action', 'status'])
+                ->addColumn('checkbox', function ($jobApplication) {
+                    return '<input type="checkbox" name="selected_ids[]" value="' . $jobApplication->id . '">';
+                })
+                ->rawColumns(['action', 'status','checkbox'])
                 ->make(true);
 
         }

@@ -5,14 +5,28 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
-class AdminController extends Controller
+class AdminController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+
+            new Middleware('permission:View Admin', only: ['index']),
+            new Middleware('permission:Create Admin', only: ['store','create']),
+            new Middleware('permission:Edit Admin', only: ['update','edit']),
+            new Middleware('permission:Delete Admin', only: ['destroy']),
+            new Middleware('permission:Status Admin', only: ['changeAdminStatus']),
+
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
@@ -32,21 +46,20 @@ class AdminController extends Controller
       return   DataTables::of($admins)
             ->addColumn('status', function ($admin) {
 
-//                if(Auth::guard('admin')->user()->can('Status Admin')) {
+                if(Auth::user()->can('Status Admin')) {
                     if ($admin->status == 1) {
                         return ' <a class="status" id="adminStatus" href="javascript:void(0)"
                                                data-id="'.$admin->id.'" data-status="'.$admin->status.'"> <i
                                                         class="fa-solid fa-toggle-on fa-2x"></i>
                                             </a>';
                     } else {
-                        
                         return '<a class="status" id="adminStatus" href="javascript:void(0)"
                                                data-id="'.$admin->id.'" data-status="'.$admin->status.'"> <i
                                                         class="fa-solid fa-toggle-off fa-2x" style="color: grey"></i>
                                             </a>';
-                        
                     }
 //                }
+                }
 
             })
           ->addColumn('role', function ($admin) {
@@ -60,28 +73,25 @@ class AdminController extends Controller
           })
           ->addColumn('action', function ($admin) {
 
+              $editAction = '';
+              $deleteAction = '';
+          
+
+              if(Auth::user()->can('Edit Admin')) {
+//
               $editAction = '<a class="editButton btn btn-sm btn-primary" href="javascript:void(0)"
                                   data-id="'.$admin->id.'" data-bs-toggle="modal" data-bs-target="#editAdminModal">
                                    <i class="fas fa-edit"></i></a>';
+
+              }
+//
+              if(Auth::user()->can('Delete Admin')) {
+//
               $deleteAction = '<a class="btn btn-sm btn-danger" href="javascript:void(0)"
                                    data-id="'.$admin->id.'" id="deleteAdminBtn""> 
                                    <i class="fas fa-trash"></i></a>';
-
-//              if(Auth::guard('admin')->user()->can('Edit Admin')) {
 //
-//                  $editAction= '<a class="editButton btn btn-sm btn-primary" href="javascript:void(0)"
-//                                    data-id="'.$admin->id.'" data-bs-toggle="modal" data-bs-target="#editAdminModal">
-//                                    <i class="fas fa-edit"></i></a>';
-//
-//              }
-//
-//              if(Auth::guard('admin')->user()->can('Delete Admin')) {
-//
-//                  $deleteAction= '<a class="btn btn-sm btn-danger" href="javascript:void(0)"
-//                                    data-id="'.$admin->id.'" id="deleteAdminBtn""> 
-//                                    <i class="fas fa-trash"></i></a>';
-//
-//              }
+              }
 
               return '<div class="d-flex gap-3"> '.$editAction.$deleteAction.'</div>';
 
