@@ -6,10 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Models\JobPost;
 use App\Models\Position;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Yajra\DataTables\Facades\DataTables;
 
-class PositionController extends Controller
+class PositionController extends Controller implements HasMiddleware 
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:View Position', only: ['index']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
@@ -20,7 +28,6 @@ class PositionController extends Controller
         $positions = Position::query()->where('job_post_id', $id);
         
         if (\request()->ajax()) {
-
             return   DataTables::of($positions)
                 ->addColumn('status', function ($position) {
 
@@ -77,7 +84,6 @@ class PositionController extends Controller
                 })
                 ->rawColumns(['action', 'status'])
                 ->make(true);
-
         }
         
         return view('backend.pages.position.index', compact('jobPost'));

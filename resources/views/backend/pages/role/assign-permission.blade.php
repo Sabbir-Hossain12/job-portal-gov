@@ -54,10 +54,7 @@
                         @method('PUT')
                         
                             <div class="col-md-6">
-
                                 <div>
-
-                           
                                     <div class="form-check mb-3">
                                         <input class="form-check-input" @checked($role->hasPermissionTo($permission->name)) name="permissions[]" type="checkbox"
                                                id="formCheck1_{{ $permission->id }}" value="{{$permission->name}}">
@@ -65,8 +62,6 @@
                                             {{$permission->name}}
                                         </label>
                                     </div>
-
-
                                 </div>
                             </div>
 
@@ -89,6 +84,5 @@
 @endsection
 
 @push('backendJs')
-
-
+    
 @endpush

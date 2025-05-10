@@ -305,7 +305,7 @@
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
-                        url: "{{ url('admin/admins') }}/" + id + "/edit",
+                        url: "{{ url('/admins') }}/" + id + "/edit",
                         data: {
                             id: id
                         },
@@ -357,7 +357,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    url: "{{ url('admin/admins') }}/" + id,
+                    url: "{{ url('/admins') }}/" + id,
                     data: formData,
                     processData: false,  // Prevent jQuery from processing the data
                     contentType: false,  // Prevent jQuery from setting contentType
@@ -408,7 +408,7 @@
                             $.ajax({
                                 type: 'DELETE',
             
-                                url: "{{ url('admin/admins') }}/" + id,
+                                url: "{{ url('/admins') }}/" + id,
                                 data: {
                                     '_token': token
                                 },

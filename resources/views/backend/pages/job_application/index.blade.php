@@ -40,6 +40,10 @@
                         <h4 class="card-title">Job Applications</h4>
 
                         <div class="d-flex gap-2">
+                            <a class="btn btn-info" id="importExcel" href="{{ route('admin.import.index') }}">
+                                Import
+                            </a>
+                            
                             <a class="btn btn-danger" id="bulkAdmitCardIssue" href="javascript: void(0);">
                                 Issue Admin Card
                             </a>

@@ -31,14 +31,11 @@ class AuthenticationController extends Controller
         $request->session()->regenerate();
         
         $user = Auth::user();
-        
-        if ($user->hasRole('admin')) {
-            return redirect()->intended(route('admin.dashboard.index'));
-        }
 
-        else if ($user->hasRole('teacher')) {
+        if ($user->hasPermissionTo('Admin Dashboard')) {
             return redirect()->intended(route('admin.dashboard.index'));
         }
+        
         
         Auth::logout();
         abort(403, 'Unauthorized action.');

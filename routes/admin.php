@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EnrolmentController;
 use App\Http\Controllers\Admin\HerobannerController;
+use App\Http\Controllers\Admin\ImportController;
 use App\Http\Controllers\Admin\JobApplicationController;
 use App\Http\Controllers\Admin\JobPostController;
 use App\Http\Controllers\Admin\LessonController;
@@ -57,7 +58,6 @@ Route::name('admin.')->middleware(['checkAuth'])->group(function ()
     Route::resource('/admins', AdminController::class)->names('admin');
     Route::get('/admin/data', [AdminController::class, 'getData'])->name('admin.data');
     Route::post('/change-admin-status', [AdminController::class, 'changeAdminStatus'])->name('admin.status');
-    
 
     //Roles and Permissions
     Route::resource('/roles', RoleController::class)->names('role');
@@ -97,4 +97,8 @@ Route::name('admin.')->middleware(['checkAuth'])->group(function ()
     //Admit Card
     Route::get('/preview-admit-cards/{id}', [AdmitCardController::class, 'previewAdminCard'])->name('admitcard.preview');
 
+    //import 
+    Route::get('/import', [ImportController::class, 'index'])->name('import.index');
+    Route::post('/import-save', [ImportController::class, 'import'])->name('import.store');
+    
 });

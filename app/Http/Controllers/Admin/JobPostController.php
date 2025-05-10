@@ -5,10 +5,26 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\JobPost;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
-class JobPostController extends Controller
+class JobPostController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+
+            new Middleware('permission:View Post', only: ['index', 'getData']),
+            new Middleware('permission:Create Post', only: ['store', 'create']),
+            new Middleware('permission:Edit Post', only: ['update', 'edit']),
+            new Middleware('permission:Delete Post', only: ['destroy']),
+            new Middleware('permission:Status Post', only: ['changeJobPostStatus']),
+            
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -20,63 +36,52 @@ class JobPostController extends Controller
     public function getData()
     {
         $jobPosts = JobPost::query();
-        
-        return   DataTables::of($jobPosts)
-            ->addColumn('status', function ($jobPost) {
 
-//                if(Auth::guard('admin')->user()->can('Status Admin')) {
-                if ($jobPost->status == 1) {
-                    return ' <a class="status" id="adminStatus" href="javascript:void(0)"
+        return DataTables::of($jobPosts)
+            ->addColumn('status', function ($jobPost) {
+                if (Auth::user()->can('Status Post')) {
+                    if ($jobPost->status == 1) {
+                        return ' <a class="status" id="adminStatus" href="javascript:void(0)"
                                                data-id="'.$jobPost->id.'" data-status="'.$jobPost->status.'"> <i
                                                         class="fa-solid fa-toggle-on fa-2x"></i>
                                             </a>';
-                } else {
-
-                    return '<a class="status" id="adminStatus" href="javascript:void(0)"
+                    } else {
+                        return '<a class="status" id="adminStatus" href="javascript:void(0)"
                                                data-id="'.$jobPost->id.'" data-status="'.$jobPost->status.'"> <i
                                                         class="fa-solid fa-toggle-off fa-2x" style="color: grey"></i>
                                             </a>';
-
+                    }
                 }
-//                }
-
             })
             ->addColumn('action', function ($jobPost) {
-                
                 $editRoute = route('admin.jobpost.edit', $jobPost->id);
                 $positionRoute = route('admin.position.index', $jobPost->id);
-                
-                $positionBtn    = '<a class="editButton btn btn-sm btn-success" href="'.$positionRoute.'">Positions
+
+                $positionBtn = '<a class="editButton btn btn-sm btn-success" href="'.$positionRoute.'">Positions
                                    </a>';
 
-                $editAction     = '<a class="editButton btn btn-sm btn-primary" href="'.$editRoute.'">
+                $editAction = '<a class="editButton btn btn-sm btn-primary" href="'.$editRoute.'">
                                    <i class="fas fa-edit"></i></a>';
-                $deleteAction   = '<a class="btn btn-sm btn-danger" href="javascript:void(0)"
+                $deleteAction = '<a class="btn btn-sm btn-danger" href="javascript:void(0)"
                                    data-id="'.$jobPost->id.'" id="deleteAdminBtn""> 
                                    <i class="fas fa-trash"></i></a>';
 
-//              if(Auth::guard('admin')->user()->can('Edit Admin')) {
-//
-//                  $editAction= '<a class="editButton btn btn-sm btn-primary" href="javascript:void(0)"
-//                                    data-id="'.$admin->id.'" data-bs-toggle="modal" data-bs-target="#editAdminModal">
-//                                    <i class="fas fa-edit"></i></a>';
-//
-//              }
-//
-//              if(Auth::guard('admin')->user()->can('Delete Admin')) {
-//
-//                  $deleteAction= '<a class="btn btn-sm btn-danger" href="javascript:void(0)"
-//                                    data-id="'.$admin->id.'" id="deleteAdminBtn""> 
-//                                    <i class="fas fa-trash"></i></a>';
-//
-//              }
-
+                if (!Auth::user()->can('Edit Post')) {
+                    $editAction = '';
+                }
+                
+                if (!Auth::user()->can('Delete Post')) {
+                    $deleteAction = '';
+                }
+                
+                if (!Auth::user()->can('View Position')) {
+                    $positionBtn = '';
+                }
+                
                 return '<div class="d-flex gap-3"> '.$positionBtn.$editAction.$deleteAction.'</div>';
-
             })
             ->rawColumns(['action', 'status'])
             ->make(true);
-
     }
 
     /**
@@ -102,18 +107,16 @@ class JobPostController extends Controller
         $jobPost->exam_date = $request->exam_date;
         $jobPost->exam_time = $request->exam_time;
         $jobPost->exam_instructions = $request->exam_instructions;
-        
+
         if ($request->hasFile('img')) {
-            
             $file = $request->file('img');
             $filename = time().uniqid().$file->getClientOriginalExtension();
             $file->move(public_path('backend/upload/job_post/'), $filename);
-            $jobPost->img ='backend/upload/job_post/'. $filename;
-            
+            $jobPost->img = 'backend/upload/job_post/'.$filename;
         }
-        
+
         $jobPost->save();
-        
+
         return redirect()->route('admin.jobpost.index')->with('success', 'Job Post Created successfully');
     }
 
@@ -146,22 +149,20 @@ class JobPostController extends Controller
         $jobPost->exam_date = $request->exam_date;
         $jobPost->exam_time = $request->exam_time;
         $jobPost->exam_instructions = $request->exam_instructions;
-        
+
         if ($request->hasFile('img')) {
-            
             if ($jobPost->img && file_exists(public_path($jobPost->img))) {
                 unlink(public_path($jobPost->img));
             }
-            
+
             $file = $request->file('img');
             $filename = time().uniqid().$file->getClientOriginalExtension();
             $file->move(public_path('backend/upload/job_post/'), $filename);
-            $jobPost->img ='backend/upload/job_post/'. $filename;
-            
+            $jobPost->img = 'backend/upload/job_post/'.$filename;
         }
-        
+
         $jobPost->save();
-        
+
         return redirect()->route('admin.jobpost.index')->with('success', 'Job Post Updated successfully');
     }
 
@@ -172,7 +173,7 @@ class JobPostController extends Controller
     {
         $jobPost->delete();
 
-        return response()->json(['status' => 'success','message' => 'Job Post Deleted successfully'], 200);
+        return response()->json(['status' => 'success', 'message' => 'Job Post Deleted successfully'], 200);
     }
 
     public function changeJobPostStatus(Request $request)
@@ -192,6 +193,6 @@ class JobPostController extends Controller
 
         return response()->json(['message' => 'success', 'status' => $stat, 'id' => $id]);
     }
-    
-    
+
+
 }

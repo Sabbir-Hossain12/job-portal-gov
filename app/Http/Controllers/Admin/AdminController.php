@@ -39,9 +39,9 @@ class AdminController extends Controller implements HasMiddleware
 
     public function getData()
     {
-        $admins = User::role('admin')->get();
-
-//        dd($admins);
+        $admins = User::permission('Admin Dashboard')->get();
+        
+//      dd($admins);
         
       return   DataTables::of($admins)
             ->addColumn('status', function ($admin) {

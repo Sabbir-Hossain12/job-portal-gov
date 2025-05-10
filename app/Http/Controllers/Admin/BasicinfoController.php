@@ -6,9 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Basicinfo;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class BasicinfoController extends Controller
+class BasicinfoController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:View Settings', only: ['index','store','update']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
@@ -115,7 +123,7 @@ class BasicinfoController extends Controller
     {
         //
     }
-
+    
     /**
      * Show the form for editing the specified resource.
      */

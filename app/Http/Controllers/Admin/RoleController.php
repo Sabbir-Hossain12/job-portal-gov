@@ -16,12 +16,13 @@ class RoleController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-
+            
             new Middleware('permission:View Role', only: ['index','getData']),
             new Middleware('permission:Create Role', only: ['store','create']),
             new Middleware('permission:Edit Role', only: ['update','edit']),
             new Middleware('permission:Delete Role', only: ['destroy']),
-
+            new Middleware('permission:Assign Permission', only: ['assignPermissionsToRole','assignPermissionsToRolePage']),
+            
         ];
     }
     public function index()
@@ -37,8 +38,6 @@ class RoleController extends Controller implements HasMiddleware
         $roles = Role::all();
         
 //        dd($roles);
-
-
         return DataTables::of($roles)
 //            ->addColumn('status', function ($admin) {
 //                if ($admin->status == 1) {
